@@ -14,7 +14,7 @@ import java.net.URLConnection;
 
 public class HttpRequest
 {
-    public static String doGet(String url, String uname, String pwd)throws IOException
+    public String doGet(String url, String uname, String pwd)throws IOException
     {
         //System.out.println(url);
         String result = "";
