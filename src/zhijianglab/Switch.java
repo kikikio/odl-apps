@@ -23,11 +23,12 @@ public class Switch
         this.rawSwitchJsonInfo = getSwitchInfo(url, uname, pwd);
         JSONObject switchJsonObject = JSONObject.fromObject(rawSwitchJsonInfo);
         String nodeArrayInfo = switchJsonObject.optString("node");
-        //System.out.println(nodeArrayInfo);
+
         JSONArray nodeArray = JSONArray.fromObject(nodeArrayInfo);
-        JSONObject portJsonObject = nodeArray.getJSONObject(1);
+        JSONObject portJsonObject = nodeArray.getJSONObject(0);
 
         String portsRawJsonInfo = portJsonObject.optString("node-connector");
+        //System.out.println(portsRawJsonInfo);
         JSONArray portJsonArray = JSONArray.fromObject(portsRawJsonInfo);
 
         for (int i = 0; i < portJsonArray.size(); i++)

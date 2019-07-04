@@ -23,7 +23,7 @@ public class HttpRequest
 
         String usrinfo = uname + ":" + pwd;
 
-        System.out.println(url);
+        //System.out.println(url);
 
         URL realurl = new URL(url);
 
