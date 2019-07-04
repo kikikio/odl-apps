@@ -1,15 +1,45 @@
 package zhijianglab;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import zhijianglab.FlowTable;
+import zhijianglab.HttpRequest;
+import zhijianglab.Port;
+
 
 public class Switch
 {
     private String switchId = null;
-    private ArrayList<String> ports = new ArrayList<String>();
+    private ArrayList<Port> ports = new ArrayList<Port>();
+    private String rawSwitchJsonInfo = null;
+    private ArrayList<FlowTable> flowTables = new ArrayList<FlowTable>();
 
-    public Switch(String switchId)
+    public Switch(String switchId, String url, String uname, String pwd)throws IOException
     {
         this.switchId = switchId;
+        this.rawSwitchJsonInfo = getSwitchInfo(url, uname, pwd);
+        JSONObject switchJsonObject = JSONObject.fromObject(rawSwitchJsonInfo);
+        String nodeArrayInfo = switchJsonObject.optString("node");
+        //System.out.println(nodeArrayInfo);
+        JSONArray nodeArray = JSONArray.fromObject(nodeArrayInfo);
+        JSONObject portJsonObject = nodeArray.getJSONObject(1);
+
+        String portsRawJsonInfo = portJsonObject.optString("node-connector");
+        JSONArray portJsonArray = JSONArray.fromObject(portsRawJsonInfo);
+
+        for (int i = 0; i < portJsonArray.size(); i++)
+        {
+            JSONObject perPortObject = portJsonArray.getJSONObject(i);
+
+            Port newPort = new Port(perPortObject);
+
+            ports.add(newPort);
+
+        }
+
     }
 
     public void showInfo()
@@ -24,7 +54,31 @@ public class Switch
 
     public void addPort(String portId)
     {
-        ports.add(portId);
+
     }
 
+    public String getSwitchInfo(String url, String uname, String pwd)throws IOException
+    {
+        String result = null;
+        HttpRequest hr = new HttpRequest();
+
+        result = hr.doGet(url + "/restconf/operational/opendaylight-inventory:nodes/node/" + switchId, uname, pwd);
+
+        //rawSwitchJsonInfo = result;
+
+        //System.out.println(result);
+
+        return result;
+    }
+
+
+    public void getFlowTable()
+    {
+
+    }
+
+    public String getSwitchId()
+    {
+        return this.switchId;
+    }
 }

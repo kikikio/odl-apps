@@ -23,6 +23,8 @@ public class HttpRequest
 
         String usrinfo = uname + ":" + pwd;
 
+        System.out.println(url);
+
         URL realurl = new URL(url);
 
         HttpURLConnection conn = (HttpURLConnection)realurl.openConnection();
@@ -30,23 +32,32 @@ public class HttpRequest
         String encodeedpwd = Base64.getEncoder().encodeToString((usrinfo).getBytes());
 
         conn.setRequestProperty("Authorization", "Basic " + encodeedpwd);
-        conn.setConnectTimeout(6000*5);
-        conn.setReadTimeout(6000*5);
+        conn.setConnectTimeout(6000*10);
+        conn.setReadTimeout(6000*10);
         conn.setRequestMethod("GET");
         conn.setDoOutput(true);
         conn.setDoInput(true);
+        //System.out.println(conn.getResponseCode());
+
+
 
         in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
+
         String line;
-        while ((line = in.readLine()) != null) {
+        while ((line = in.readLine()) != null)
+        {
             result += line;
         }
-        System.out.println(result);
 
-        if(in!=null){
+
+        if (in!=null)
+        {
             in.close();
         }
+
+        //System.out.println(result);
+
         return result;
     }
 }
