@@ -19,8 +19,13 @@ public class Switch
 
     public Switch(String switchId, String url, String uname, String pwd)throws IOException
     {
+
         this.switchId = switchId;
+
+
         this.rawSwitchJsonInfo = getSwitchInfo(url, uname, pwd);
+
+
         JSONObject switchJsonObject = JSONObject.fromObject(rawSwitchJsonInfo);
         String nodeArrayInfo = switchJsonObject.optString("node");
 
@@ -43,16 +48,20 @@ public class Switch
 
         }
         String tableRawJsonInfo = portJsonObject.optString("flow-node-inventory:table");
-
+        //System.out.println(tableRawJsonInfo);
         JSONArray tableArray = JSONArray.fromObject(tableRawJsonInfo);
         for (int i = 0; i < tableArray.size(); i++)
         {
             JSONObject perTableObject = tableArray.getJSONObject(i);
+
+            //System.out.println(perTableObject.toString());
+
             FlowTable newTable = new FlowTable(perTableObject);
             if (newTable.getPktLookUp() == 0 && newTable.getPktMatched() == 0)
             {
                 continue;
             }
+            //System.out.println("useful table");
             flowTables.add(newTable);
             //newTable.showInfo();
         }
@@ -61,19 +70,28 @@ public class Switch
 
     public void showInfo()
     {
-        System.out.println("this is switch " + switchId);
+        System.out.println("########## show " + switchId + " info ##########");
+        System.out.println("########## show prots info ##########");
+        System.out.println();
         for (int i = 0; i < ports.size(); i++)
         {
             ports.get(i).showInfo();
         }
-        System.out.println("port info end");
-        System.out.println(flowTables.size());
+        System.out.println("########## port info end ##########");
+        //System.out.println(flowTables.size());
+        System.out.println();
+        System.out.println("######### show table info #########");
+        System.out.println();
 
         for (int i = 0; i < flowTables.size(); i++)
         {
             flowTables.get(i).showInfo();
         }
+        System.out.println("########## table info end ##########");
         System.out.println();
+        System.out.println("########## " + switchId + " info end ##########");
+        System.out.println();
+
 
     }
 
@@ -90,12 +108,6 @@ public class Switch
         //System.out.println(result);
 
         return result;
-    }
-
-
-    public void getFlowTable()
-    {
-
     }
 
     public String getSwitchId()

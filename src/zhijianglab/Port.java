@@ -42,13 +42,16 @@ public class Port
     }
     public void showInfo()
     {
-        System.out.println(this.portId);
-        System.out.println(this.recevBytes);
-        System.out.println(this.transBytes);
-        System.out.println(this.recevPkts);
-        System.out.println(this.transPkts);
-        System.out.println(this.nickName);
-        System.out.println(this.portNumber);
-        System.out.println(this.portMac);
+        System.out.println("########## " + this.nickName + " info ##########");
+        System.out.println("portId : " + this.portId);
+        System.out.println("recevBytes : " + this.recevBytes);
+        System.out.println("transBytes : " + this.transBytes);
+        System.out.println("recevPkts : " + this.recevPkts);
+        System.out.println("transPkts : " + this.transPkts);
+        //System.out.println("nickName" + this.nickName);
+        System.out.println("portNumber : " + this.portNumber);
+        System.out.println("portMac : " + this.portMac);
+        System.out.println("########## "+ this.nickName +" info end ##########");
+        System.out.println();
     }
 }

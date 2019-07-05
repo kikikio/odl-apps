@@ -27,8 +27,11 @@ public class FlowTable
         {
             return;
         }
+        //System.out.println(tableStaticObject.toString());
+        String flowEntriesInfo = tableObject.optString("flow");
+        //System.out.println(flowEntriesInfo);
 
-        String flowEntriesInfo = tableStaticObject.optString("flow");
+
         JSONArray flowEntriesArray = JSONArray.fromObject(flowEntriesInfo);
 
         for (int i = 0; i < flowEntriesArray.size(); i++)
@@ -36,6 +39,7 @@ public class FlowTable
             JSONObject perFlowEntryObject = flowEntriesArray.getJSONObject(i);
             Flowentries newFlowEntry = new Flowentries(perFlowEntryObject);
             flowentries.add(newFlowEntry);
+            //newFlowEntry.showInfo();
         }
 
 
@@ -55,6 +59,25 @@ public class FlowTable
 
     public void showInfo()
     {
-        System.out.println("useful table id : " + tableId);
+        System.out.println("########## table : " + this.tableId + " info ##########");
+        System.out.println("tableId : " + this.tableId);
+        System.out.println("pktLookUp : " + this.pktLookUp);
+        System.out.println("pktMatched : " + this.pktMatched);
+
+        System.out.println("######### show flowentries info #########");
+        System.out.println();
+
+        for (int i = 0; i < flowentries.size(); i++)
+        {
+            flowentries.get(i).showInfo();
+        }
+        System.out.println();
+
+        System.out.println("######### flowentries info end #########");
+
+        //System.out.println("######### show flowentries info #########");
+
+        System.out.println("########## table : "+ this.tableId +" info end ##########");
+        System.out.println();
     }
 }

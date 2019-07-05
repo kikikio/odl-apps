@@ -10,7 +10,7 @@ public class Main
         OdlUtil ou = new OdlUtil("10.3.0.113", 8181, "admin", "admin");
         ou.getTopo();
         ou.parseTopo();
-
+        ou.showAllSwitchs();
 
     }
 }
