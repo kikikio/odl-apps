@@ -39,6 +39,22 @@ public class Switch
 
             ports.add(newPort);
 
+            //newPort.showInfo();
+
+        }
+        String tableRawJsonInfo = portJsonObject.optString("flow-node-inventory:table");
+
+        JSONArray tableArray = JSONArray.fromObject(tableRawJsonInfo);
+        for (int i = 0; i < tableArray.size(); i++)
+        {
+            JSONObject perTableObject = tableArray.getJSONObject(i);
+            FlowTable newTable = new FlowTable(perTableObject);
+            if (newTable.getPktLookUp() == 0 && newTable.getPktMatched() == 0)
+            {
+                continue;
+            }
+            flowTables.add(newTable);
+            //newTable.showInfo();
         }
 
     }
@@ -48,15 +64,19 @@ public class Switch
         System.out.println("this is switch " + switchId);
         for (int i = 0; i < ports.size(); i++)
         {
-            System.out.println(ports.get(i));
+            ports.get(i).showInfo();
+        }
+        System.out.println("port info end");
+        System.out.println(flowTables.size());
+
+        for (int i = 0; i < flowTables.size(); i++)
+        {
+            flowTables.get(i).showInfo();
         }
         System.out.println();
-    }
-
-    public void addPort(String portId)
-    {
 
     }
+
 
     public String getSwitchInfo(String url, String uname, String pwd)throws IOException
     {

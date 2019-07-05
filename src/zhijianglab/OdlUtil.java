@@ -92,7 +92,7 @@ public class OdlUtil
                 Switch newSwitch = new Switch(switchId, url, uname, pwd);
 
                 switches.add(newSwitch);
-                //newSwitch.showInfo();
+                newSwitch.showInfo();
 
             }
             // other devices

@@ -38,6 +38,10 @@ public class Port
         this.portNumber = portObject.optInt("flow-node-inventory:port-number");
         this.portMac = portObject.optString("flow-node-inventory:hardware-address");
 
+
+    }
+    public void showInfo()
+    {
         System.out.println(this.portId);
         System.out.println(this.recevBytes);
         System.out.println(this.transBytes);
