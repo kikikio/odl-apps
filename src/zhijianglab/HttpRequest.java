@@ -64,6 +64,7 @@ public class HttpRequest
 
     public String doPut(String url, String uname, String pwd, String params)throws IOException
     {
+        System.out.println(url);
         URL realurl = new URL(url);
         StringBuffer sbuffer = null;
         HttpURLConnection conn = (HttpURLConnection)realurl.openConnection();
@@ -106,7 +107,7 @@ public class HttpRequest
         }
         else
         {
-            System.out.println("fail conn" + conn.getResponseCode());
+            System.out.println("fail conn " + conn.getResponseCode());
         }
         conn.disconnect();
         return sbuffer.toString();

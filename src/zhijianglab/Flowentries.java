@@ -7,6 +7,7 @@ import zhijianglab.Match;
 
 import javax.swing.plaf.synth.SynthLookAndFeel;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class Flowentries
@@ -18,6 +19,10 @@ public class Flowentries
     private int priority = 0;
     private Match matchField = null;
 
+    public Flowentries()
+    {
+
+    }
     public Flowentries(JSONObject flowEntryObject)
     {
         this.entryId = flowEntryObject.optString("id");
@@ -120,4 +125,101 @@ public class Flowentries
 
 
     }
+
+
+    /*
+    {
+        "flow": [
+            {
+                "id": "523",
+                "match": {
+                    "ethernet-match": {
+                        "ethernet-source": {
+                            "address": "mac_src"
+                        },
+                        "ethernet-destination": {
+                            "address": "mac_dst"
+                        }
+                    },
+                    "ipv4-source": "ip_src",
+                    "ipv4-destination": "ip_dst"
+                },
+                "out_port": "out_port",
+                "flow-name": "flow_name",
+                "priority": "priority"
+            }
+        ]
+    }
+     */
+
+
+    public String genEntryJson(Map<String, String> matches, Map<String, String> actions)
+    {
+        String result = "";
+
+        JSONObject matchJson = new JSONObject();
+        String matchField = "";
+
+
+
+        JSONObject srcMacJson = new JSONObject();
+        String srcMac = matches.get("src_mac");
+        srcMacJson.put("address", srcMac);
+        srcMac = srcMacJson.toString();
+        srcMacJson.clear();
+        matchJson.put("ethernet-source", srcMac);
+        //srcMac = srcMacJson.toString();
+
+        JSONObject dstMacJson = new JSONObject();
+        String dstMac = matches.get("dst_mac");
+        dstMacJson.put("address", dstMac);
+        dstMac = dstMacJson.toString();
+        dstMacJson.clear();
+        matchJson.put("ethernet-destination", dstMac);
+        //dstMac = dstMacJson.toString();
+
+        String ethField = matchJson.toString();
+        matchJson.clear();
+        matchJson.put("ethernet-match", ethField);
+
+        //System.out.println(matchJson.toString());
+
+        String srcIpField = matches.get("src_ip");
+        matchJson.put("ipv4-source", srcIpField);
+
+        String dstIpField = matches.get("dst_ip");
+        matchJson.put("ipv4-destination", dstIpField);
+
+        //System.out.println(matchJson.toString());
+
+        matchField = matchJson.toString();
+
+        String idField = matches.get("id");
+        String outPortField = matches.get("out_port");
+        String flowNameField = matches.get("flow-name");
+        String priorityField = matches.get("priority");
+        String timeOutField = matches.get("timeout");
+
+        JSONObject fullJson = new JSONObject();
+        fullJson.put("id", idField);
+        fullJson.put("match", matchField);
+        fullJson.put("out_port", outPortField);
+        fullJson.put("flow-name", flowNameField);
+        fullJson.put("priority", priorityField);
+        fullJson.put("hard-timeout", timeOutField);
+
+
+        //System.out.println(dstMac);
+
+        String fullField = "[" + fullJson.toString() + "]";
+        fullJson.clear();
+        fullJson.put("flow", fullField);
+
+        System.out.println(fullJson.toString());
+        result = fullJson.toString();
+
+        return result;
+    }
+
+
 }
