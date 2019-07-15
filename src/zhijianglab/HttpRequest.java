@@ -1,11 +1,12 @@
 package zhijianglab;
 
 
+import org.apache.commons.httpclient.methods.PutMethod;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+
+import java.io.*;
 import java.util.Base64;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -60,4 +61,55 @@ public class HttpRequest
 
         return result;
     }
+
+    public String doPut(String url, String uname, String pwd, String params)throws IOException
+    {
+        URL realurl = new URL(url);
+        StringBuffer sbuffer = null;
+        HttpURLConnection conn = (HttpURLConnection)realurl.openConnection();
+
+        String usrinfo = uname + ":" + pwd;
+
+        String encodeedpwd = Base64.getEncoder().encodeToString((usrinfo).getBytes());
+
+        conn.setRequestProperty("Authorization", "Basic " + encodeedpwd);
+        conn.setConnectTimeout(6000*10);
+        conn.setReadTimeout(6000*10);
+        conn.setRequestMethod("PUT");
+        conn.setDoOutput(true);
+        conn.setDoInput(true);
+        conn.setRequestProperty("Content-Type", " application/json");
+        conn.setRequestProperty("Accept-Charset", "utf-8");
+        conn.setRequestProperty("Connection", "keep-alive");
+        conn.setRequestProperty("Content-Length", params.getBytes().length + "");
+
+        conn.connect();
+
+        OutputStream out = conn.getOutputStream();
+
+        out.write(params.getBytes());
+        out.flush();
+        out.close();
+
+        if (conn.getResponseCode() == 200)
+        {
+            InputStreamReader inputStream =new InputStreamReader(conn.getInputStream());
+            BufferedReader reader = new BufferedReader(inputStream);
+            String lines;
+            sbuffer= new StringBuffer("");
+            while ((lines = reader.readLine()) != null)
+            {
+                lines = new String(lines.getBytes(), "utf-8");
+                sbuffer.append(lines);
+            }
+            reader.close();
+        }
+        else
+        {
+            System.out.println("fail conn" + conn.getResponseCode());
+        }
+        conn.disconnect();
+        return sbuffer.toString();
+    }
+
 }

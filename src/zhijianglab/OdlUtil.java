@@ -127,4 +127,49 @@ public class OdlUtil
         }
     }
 
+    public String setFlowEntry() throws IOException {
+        String result = null;
+
+        HttpRequest hr = new HttpRequest();
+
+        result = hr.doPut(url + "/restconf/config/opendaylight-inventory:nodes/node/openflow:93180999844825/flow-node-inventory:table/0/flow/523", uname, pwd, " {\n" +
+                "\n" +
+                "    \"flow\": [\n" +
+                "        {\n" +
+                "            \"id\": \"523\",\n" +
+                "            \"match\": {\n" +
+                "                \"in-port\": \"1\",\n" +
+                "                \"ethernet-match\": {\n" +
+                "                    \"ethernet-type\": {\n" +
+                "                        \"type\": \"2048\"\n" +
+                "                    }\n" +
+                "                },\n" +
+                "                \"ipv4-source\": \"10.0.0.1/32\",\n" +
+                "                \"ipv4-destination\": \"10.0.0.3/32\"\n" +
+                "            },\n" +
+                "            \"instructions\": {\n" +
+                "                \"instruction\": [\n" +
+                "                    {\n" +
+                "                        \"order\": \"0\",\n" +
+                "                        \"apply-actions\": {\n" +
+                "                            \"action\": [\n" +
+                "                                {\n" +
+                "                                    \"order\": \"0\",\n" +
+                "                                    \"drop-action\": {}\n" +
+                "                                }\n" +
+                "                            ]\n" +
+                "                        }\n" +
+                "                    }\n" +
+                "                ]\n" +
+                "            },\n" +
+                "            \"flow-name\": \"15s-drop\",\n" +
+                "            \"priority\": \"65535\",\n" +
+                "            \"hard-timeout\": \"15\",\n" +
+                "            \"table_id\": \"0\"\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}");
+
+        return result;
+    }
 }
