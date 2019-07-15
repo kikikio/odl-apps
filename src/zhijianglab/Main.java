@@ -25,9 +25,12 @@ public class Main
         matches.put("out_port", "2");
         matches.put("flow-name", "test");
         matches.put("priority", "1000");
-        matches.put("src_ip", "10.0.0.1");
-        matches.put("dst_ip", "10.0.0.2");
-        matches.put("timeout", "10");
+        matches.put("src_ip", "10.0.0.1/32");
+        matches.put("dst_ip", "10.0.0.2/32");
+        matches.put("eth-type", "0x0800");
+        //matches.put("timeout", "10");
+        actions.put("output", "3");
+        actions.put("controller", "controller");
         fe.genEntryJson(matches, actions);
 
         ou.setFlowEntry("openflow:26830024711657", 0, 523, matches, actions);

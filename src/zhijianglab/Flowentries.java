@@ -131,22 +131,39 @@ public class Flowentries
     {
         "flow": [
             {
-                "id": "523",
+                "id": "555",
                 "match": {
                     "ethernet-match": {
                         "ethernet-source": {
-                            "address": "mac_src"
+                            "address": "aaaaa"
                         },
                         "ethernet-destination": {
-                            "address": "mac_dst"
+                            "address": "bbbbb"
+                        },
+                        "ethernet-type": {
+                            "type": "0x0800"
                         }
                     },
-                    "ipv4-source": "ip_src",
-                    "ipv4-destination": "ip_dst"
+                    "ipv4-source": "10.0.0.1/32",
+                    "ipv4-destination": "10.0.0.2/32"
                 },
-                "out_port": "out_port",
-                "flow-name": "flow_name",
-                "priority": "priority"
+                "instructions": {
+                    "instruction": [
+                        {
+                            "order": "0",
+                            "apply-actions": {
+                                "action": [
+                                    {
+                                        "order": "0",
+                                        "drop-action": {}
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "priority": "2000",
+                "table_id": "0"
             }
         ]
     }
@@ -159,8 +176,6 @@ public class Flowentries
 
         JSONObject matchJson = new JSONObject();
         String matchField = "";
-
-
 
         JSONObject srcMacJson = new JSONObject();
         String srcMac = matches.get("src_mac");
@@ -178,6 +193,14 @@ public class Flowentries
         matchJson.put("ethernet-destination", dstMac);
         //dstMac = dstMacJson.toString();
 
+        JSONObject ethTypeJson = new JSONObject();
+        String ethType = matches.get("eth-type");
+        ethTypeJson.put("type", ethType);
+        ethType = ethTypeJson.toString();
+        ethTypeJson.clear();
+        matchJson.put("ethernet-type", ethType);
+
+
         String ethField = matchJson.toString();
         matchJson.clear();
         matchJson.put("ethernet-match", ethField);
@@ -194,6 +217,82 @@ public class Flowentries
 
         matchField = matchJson.toString();
 
+        JSONArray actionJsonArray = new JSONArray();
+
+        int actionOrder = 0;
+        for (Map.Entry<String, String> entry : actions.entrySet())
+        {
+            String actionTypt = entry.getKey();
+            String actionContent = entry.getValue();
+            if (actionTypt.charAt(0) == 'o')
+            {
+                /*
+                {
+                    "order": 1,
+                    "output-action": {
+                        "output-node-connector": "3",
+                        "max-length": 0
+                    }
+                }
+                 */
+
+                JSONObject outputJson = new JSONObject();
+                outputJson.put("output-node-connector", actionContent);
+                outputJson.put("max-length", 0);
+                String outPutField = outputJson.toString();
+                outputJson.clear();
+                outputJson.put("order", actionOrder);
+                outputJson.put("output-action", outPutField);
+
+                actionJsonArray.add(outputJson);
+
+
+
+            }
+            else if (actionTypt.charAt(0) == 'd')
+            {
+                /*
+                {
+                    "order": "0",
+                    "drop-action": {}
+                }
+                 */
+                JSONObject dropJson = new JSONObject();
+                dropJson.put("order", String.valueOf(actionOrder));
+                dropJson.put("drop-action", "{}");
+
+                actionJsonArray.add(dropJson);
+
+            }
+            else if (actionTypt.charAt(0) == 'c')
+            {
+
+                /*
+                {
+                    "order": 2,
+                    "output-action": {
+                        "output-node-connector": "CONTROLLER",
+                        "max-length": 65535
+                    }
+                }
+                 */
+
+                JSONObject pktInJson = new JSONObject();
+                pktInJson.put("output-node-connector", "CONTROLLER");
+                pktInJson.put("max-length", 65535);
+                String pktInField = pktInJson.toString();
+                pktInJson.clear();
+                pktInJson.put("order", actionOrder);
+                pktInJson.put("output-action", pktInField);
+
+                actionJsonArray.add(pktInJson);
+            }
+            actionOrder ++;
+        }
+
+        String insinstructionsField = "{\"instruction\":[{\"order\":0,\"apply-actions\":{\"action\":" + actionJsonArray.toString() + "}}]}";
+
+
         String idField = matches.get("id");
         String outPortField = matches.get("out_port");
         String flowNameField = matches.get("flow-name");
@@ -205,8 +304,10 @@ public class Flowentries
         fullJson.put("match", matchField);
         fullJson.put("out_port", outPortField);
         fullJson.put("flow-name", flowNameField);
+        fullJson.put("instructions", insinstructionsField);
         fullJson.put("priority", priorityField);
         fullJson.put("hard-timeout", timeOutField);
+        fullJson.put("table_id", "0");
 
 
         //System.out.println(dstMac);
