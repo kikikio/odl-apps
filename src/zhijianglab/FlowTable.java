@@ -57,27 +57,35 @@ public class FlowTable
         return pktMatched;
     }
 
-    public void showInfo()
+    public void showInfo(String path)
     {
-        System.out.println("########## table : " + this.tableId + " info ##########");
-        System.out.println("tableId : " + this.tableId);
-        System.out.println("pktLookUp : " + this.pktLookUp);
-        System.out.println("pktMatched : " + this.pktMatched);
+        FileWriter fw = new FileWriter(path);
 
-        System.out.println("######### show flowentries info #########");
-        System.out.println();
+        fw.writeLine("tableId " + this.tableId);
+        fw.writeLine("pktLookUp " + this.pktLookUp);
+        fw.writeLine("pktMatched " + this.pktMatched);
+        fw.writeLine("flow_entries_information");
+
+
+        //System.out.println("########## table : " + this.tableId + " info ##########");
+        //System.out.println("tableId : " + this.tableId);
+        //System.out.println("pktLookUp : " + this.pktLookUp);
+        //System.out.println("pktMatched : " + this.pktMatched);
+
+        //System.out.println("######### show flowentries info #########");
+        //System.out.println();
 
         for (int i = 0; i < flowentries.size(); i++)
         {
-            flowentries.get(i).showInfo();
+            flowentries.get(i).showInfo(path);
         }
-        System.out.println();
+        //System.out.println();
 
-        System.out.println("######### flowentries info end #########");
+        //System.out.println("######### flowentries info end #########");
 
         //System.out.println("######### show flowentries info #########");
 
-        System.out.println("########## table : "+ this.tableId +" info end ##########");
-        System.out.println();
+        //System.out.println("########## table : "+ this.tableId +" info end ##########");
+        //System.out.println();
     }
 }

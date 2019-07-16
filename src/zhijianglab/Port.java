@@ -40,18 +40,29 @@ public class Port
 
 
     }
-    public void showInfo()
+    public void showInfo(String path)
     {
-        System.out.println("########## " + this.nickName + " info ##########");
-        System.out.println("portId : " + this.portId);
-        System.out.println("recevBytes : " + this.recevBytes);
-        System.out.println("transBytes : " + this.transBytes);
-        System.out.println("recevPkts : " + this.recevPkts);
-        System.out.println("transPkts : " + this.transPkts);
+        FileWriter fw = new FileWriter(path);
+
+        fw.writeLine("portId "+ this.portId);
+        fw.writeLine("recevBytes " + this.recevBytes);
+        fw.writeLine("transBytes " + this.transBytes);
+        fw.writeLine("recevPkts " + this.recevPkts);
+        fw.writeLine("transPkts " + this.transPkts);
+        fw.writeLine("portNumber " + this.portNumber);
+        fw.writeLine("portMac " + this.portMac);
+
+
+        //System.out.println("########## " + this.nickName + " info ##########");
+        //System.out.println("portId : " + this.portId);
+        //System.out.println("recevBytes : " + this.recevBytes);
+        //System.out.println("transBytes : " + this.transBytes);
+        //System.out.println("recevPkts : " + this.recevPkts);
+        //System.out.println("transPkts : " + this.transPkts);
         //System.out.println("nickName" + this.nickName);
-        System.out.println("portNumber : " + this.portNumber);
-        System.out.println("portMac : " + this.portMac);
-        System.out.println("########## "+ this.nickName +" info end ##########");
-        System.out.println();
+        //System.out.println("portNumber : " + this.portNumber);
+        //System.out.println("portMac : " + this.portMac);
+        //System.out.println("########## "+ this.nickName +" info end ##########");
+        //System.out.println();
     }
 }

@@ -1,6 +1,9 @@
 package zhijianglab;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import net.sf.json.JSONArray;
@@ -70,28 +73,27 @@ public class Switch
 
     public void showInfo()
     {
-        System.out.println("########## show " + switchId + " info ##########");
-        System.out.println("########## show prots info ##########");
-        System.out.println();
+        String path = "/home/ovs/" + switchId+ ".txt";
+        FileWriter fw = new FileWriter(path);
+
+
+        fw.writeLine("prots_information");
+
         for (int i = 0; i < ports.size(); i++)
         {
-            ports.get(i).showInfo();
+            ports.get(i).showInfo(path);
         }
-        System.out.println("########## port info end ##########");
+        //System.out.println("########## port info end ##########");
         //System.out.println(flowTables.size());
-        System.out.println();
-        System.out.println("######### show table info #########");
-        System.out.println();
+        //System.out.println();
+        fw.writeLine("table_information");
+        //System.out.println("######### show table info #########");
+        //System.out.println();
 
         for (int i = 0; i < flowTables.size(); i++)
         {
-            flowTables.get(i).showInfo();
+            flowTables.get(i).showInfo(path);
         }
-        System.out.println("########## table info end ##########");
-        System.out.println();
-        System.out.println("########## " + switchId + " info end ##########");
-        System.out.println();
-
 
     }
 

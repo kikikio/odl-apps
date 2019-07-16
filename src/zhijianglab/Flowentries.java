@@ -99,14 +99,20 @@ public class Flowentries
         }
 
     }
-    public void showInfo()
+    public void showInfo(String path)
     {
 
-        System.out.println("########## entry ： " + this.entryId + " info ##########");
-        System.out.println("entryId : " + this.entryId);
-        System.out.println("byteCnt : " + this.byteCnt);
-        System.out.println("pktCnt : " + this.pktCnt);
-        System.out.println("priority : " + this.priority);
+        FileWriter fw = new FileWriter(path);
+
+        fw.writeLine("byteCnt " + this.byteCnt);
+        fw.writeLine("pktCnt " + this.pktCnt);
+        fw.writeLine("priority " + this.priority);
+
+        //System.out.println("########## entry ： " + this.entryId + " info ##########");
+        //System.out.println("entryId : " + this.entryId);
+        //System.out.println("byteCnt : " + this.byteCnt);
+        //System.out.println("pktCnt : " + this.pktCnt);
+        //System.out.println("priority : " + this.priority);
 
         if (matchField != null)
         {
@@ -120,8 +126,8 @@ public class Flowentries
 
 
 
-        System.out.println("########## entry ：" + this.entryId + " info end ##########");
-        System.out.println();
+        //System.out.println("########## entry ：" + this.entryId + " info end ##########");
+        //System.out.println();
 
 
     }

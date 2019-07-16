@@ -2,7 +2,6 @@ package zhijianglab;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,17 +95,12 @@ public class OdlUtil
             {
                 System.out.println("parse error! unknown node type.");
             }
-
-
         }
-
         // parse links
         for (int i = 0; i < linkArray.size(); i++)
         {
 
         }
-
-
     }
     public void showAllHosts()
     {
